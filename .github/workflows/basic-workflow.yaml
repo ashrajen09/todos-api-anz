@@ -1,6 +1,8 @@
 name: Sample Java Todos API Docker Build workflow 
 
-on: push
+on: 
+  push:
+  workflow_dispatch:
 
 jobs:
   maven-build:
@@ -26,3 +28,16 @@ jobs:
 
       - name: Unit Test
         run: mvn test
+      
+      #5. Build Docker image
+      #6. Login to Docker Hub
+      #7. Push Docker image to Docker Hub
+      
+      - name: Build Docker image
+        run: docker build -t sureshdtrainer/todos-api:2.0 .
+      
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      
+      - name: Push Docker image
+        run: docker push sureshdtrainer/todos-api:2.0
